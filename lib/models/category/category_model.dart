@@ -29,4 +29,8 @@ class CategoryModel {
     required this.type,
     this.isDeleted = false,
   });
+  @override
+  String toString() {
+    return '$name $type';
+  }
 }
