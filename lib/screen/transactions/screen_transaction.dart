@@ -4,6 +4,7 @@ import 'package:money_manager/db/category/category_db.dart';
 import 'package:money_manager/db/category/transactions/transaction_db.dart';
 import 'package:money_manager/models/category/category_model.dart';
 import 'package:money_manager/models/category/transaction/transaction_model.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class ScreenTransaction extends StatelessWidget {
   const ScreenTransaction({super.key});
@@ -20,20 +21,32 @@ class ScreenTransaction extends StatelessWidget {
 //Values will be coming to item builder//
             itemBuilder: (ctx, index) {
               final _value = newList[index];
-              return Card(
-                child: ListTile(
-                  leading: CircleAvatar(
-                    radius: 50,
-                    child: Text(
-                      parseDate(_value.date),
-                      textAlign: TextAlign.center,
+              return Slidable(
+                key: Key(_value.id!),
+                startActionPane: ActionPane(motion: ScrollMotion(), children: [
+                  SlidableAction(
+                    onPressed: (ctx) {
+                      TransactionDB.instance.deleteTransaction(_value.id!);
+                    },
+                    icon: Icons.delete,
+                    label: 'Delete',
+                  )
+                ]),
+                child: Card(
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      radius: 50,
+                      child: Text(
+                        parseDate(_value.date),
+                        textAlign: TextAlign.center,
+                      ),
+                      backgroundColor: _value.type == CategoryType.income
+                          ? Colors.green
+                          : Colors.red,
                     ),
-                    backgroundColor: _value.type == CategoryType.income
-                        ? Colors.green
-                        : Colors.red,
+                    title: Text('Rs ${_value.amount}'),
+                    subtitle: Text(_value.category.name),
                   ),
-                  title: Text('Rs ${_value.amount}'),
-                  subtitle: Text(_value.category.name),
                 ),
               );
             },

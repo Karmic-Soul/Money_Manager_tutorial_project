@@ -1,7 +1,3 @@
-import 'dart:ffi';
-import 'dart:math';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:money_manager/db/category/category_db.dart';
 import 'package:money_manager/db/category/transactions/transaction_db.dart';
